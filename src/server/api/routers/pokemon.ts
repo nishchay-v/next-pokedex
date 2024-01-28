@@ -1,9 +1,7 @@
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-
-const DEFAULT_SPRITE =
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/44.png";
+import { getRandomPokemonSpriteUrl } from "@/utils/pokemon";
 
 export const pokemonRouter = createTRPCRouter({
   createPokemon: publicProcedure
@@ -13,18 +11,14 @@ export const pokemonRouter = createTRPCRouter({
         data: {
           name: input.name,
           types: input.types,
-          sprite: DEFAULT_SPRITE,
+          sprite: getRandomPokemonSpriteUrl(),
         },
       });
     }),
 
-  getPokemonByName: publicProcedure
-    .input(z.object({ name: z.string() }))
-    .query(({ ctx, input }) => {
-      return ctx.db.pokemon.findFirst({
-        where: { name: input.name },
-      });
-    }),
+  getLatestPokemons: publicProcedure.query(({ ctx }) => {
+    return ctx.db.pokemon.findMany();
+  }),
 
   getPokemonsByName: publicProcedure
     .input(z.object({ nameList: z.string().array() }))

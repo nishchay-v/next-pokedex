@@ -1,19 +1,12 @@
-import { useState } from "react";
-
 import {
-  FormControl,
   Select,
   MenuItem,
   InputLabel,
+  Box,
   SelectChangeEvent,
 } from "@mui/material";
 
-type PokemonTypeSelectionProps = {
-  selectedType: string | undefined;
-  selectType: (type: string | undefined) => void;
-};
-
-const TYPES = [
+const POKEMON_TYPES = [
   "normal",
   "fire",
   "water",
@@ -34,29 +27,59 @@ const TYPES = [
   "fairy",
 ] as const;
 
+type PokemonTypeSelectionProps = {
+  selectedType: string | Array<string> | undefined;
+  selectType: (type: string | Array<string> | undefined) => void;
+  constainerSx?: React.CSSProperties;
+  multiple?: boolean;
+  showLabel?: boolean;
+  selectSx?: React.CSSProperties;
+};
+
 export default function PokemonTypeSelection(props: PokemonTypeSelectionProps) {
-  const { selectedType, selectType } = props;
+  const {
+    selectedType,
+    selectType,
+    constainerSx,
+    multiple,
+    showLabel,
+    selectSx,
+  } = props;
 
   const onChange = (event: SelectChangeEvent) => {
     selectType(event.target.value);
   };
 
   return (
-    <FormControl sx={{ m: 2, width: 100 }}>
-      <InputLabel id="pokemon-type-select-label">Type</InputLabel>
+    <Box sx={constainerSx}>
+      {showLabel && (
+        <InputLabel
+          sx={{ marginBottom: 1, position: "relative" }}
+          shrink={false}
+          id="pokemon-type-select-label"
+        >
+          Type
+        </InputLabel>
+      )}
       <Select
-        labelId="pokemon-type-select-label"
+        multiple={multiple}
+        labelId={showLabel ? "pokemon-type-select-label" : undefined}
         id="pokemon-type-select"
         value={selectedType}
-        label="Pokemon Type"
+        placeholder="Type"
+        label="Type"
         onChange={onChange}
+        fullWidth
+        defaultValue="type"
+        cl
+        sx={showLabel ? selectSx : { ...selectSx, height: "100%" }}
       >
-        {TYPES.map((type) => (
+        {POKEMON_TYPES.map((type) => (
           <MenuItem key={type} value={type}>
             {type}
           </MenuItem>
         ))}
       </Select>
-    </FormControl>
+    </Box>
   );
 }

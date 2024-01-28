@@ -1,28 +1,28 @@
-import { useState } from "react";
 import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 
-import { api } from "@/utils/api";
-import PokemonForm from "@/components/CreatePokemonForm";
-import PokemonTable from "@/components/PokemonTable";
-import PokemonNamesInput from "@/components/PokemonNamesInput";
+import CreatePokemonForm from "@/components/CreatePokemonForm";
 import PokemonSeachTable from "@/components/FilterablePokedexTable";
+import Image from "next/image";
 
 export default function Home() {
-  const router = useRouter();
-
   return (
     <>
       <Head>
         <title>PokeDex</title>
         <meta name="description" content="PokeDex demo" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/icon.png" />
       </Head>
-      <main className="to-gray flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-white">
-        <div className="flex h-full w-full flex-col items-center p-4">
-          <PokemonForm />
-          {/* <PokemonTable pokemonName="bulbasaur" /> */}
+      <main
+        className="flex min-h-screen flex-col items-center"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(252, 235, 30, 0.5))",
+        }}
+      >
+        {" "}
+        <Image src="/icon.png" width={150} height={150} alt="pokedex logog" />
+        <div className="flex h-full w-full flex-col items-center p-4 sm:w-3/4">
+          <CreatePokemonForm />
           <PokemonSeachTable />
         </div>
       </main>

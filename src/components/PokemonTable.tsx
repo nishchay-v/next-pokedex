@@ -1,12 +1,9 @@
-import { api } from "@/utils/api";
-import Image from "next/image";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import PokemonRow from "./PokemonRow";
 
 type Pokemon = {
@@ -15,15 +12,15 @@ type Pokemon = {
   sprite: string;
 };
 
-type Props = {
+type PokemonTableProps = {
   pokemonsList: Array<Pokemon>;
 };
 
-export default function PokemonTable(props: Props) {
+export default function PokemonTable(props: PokemonTableProps) {
   const { pokemonsList } = props;
 
   const renderTableHead = () => (
-    <TableHead>
+    <TableHead sx={{ backgroundColor: "whitesmoke" }}>
       <TableRow>
         <TableCell>Pokemon</TableCell>
         <TableCell align="right">Type</TableCell>
@@ -33,7 +30,7 @@ export default function PokemonTable(props: Props) {
   );
 
   return (
-    <TableContainer component={Paper} sx={{ m: 5 }}>
+    <TableContainer sx={{ m: 5 }}>
       <Table aria-label="pokemon table">
         {renderTableHead()}
         <TableBody>

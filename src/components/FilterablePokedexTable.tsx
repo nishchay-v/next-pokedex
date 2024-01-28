@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 
+import Paper from "@mui/material/Paper";
+import { Box, Typography } from "@mui/material";
 import { api } from "@/utils/api";
 
 import PokemonTable from "./PokemonTable";
@@ -13,23 +15,78 @@ export default function PokemonSeachTable() {
   const [pokemonNames, setPokemonNames] = useState(defaultPokemonNames);
   const [pokemonType, setPokemonType] = useState("");
 
-  const filteredPokemons = api.pokemon.getPokemonsByNamesAndType.useQuery({
-    nameList: pokemonNames,
-    type: pokemonType,
-  });
+  const pokemonsByNameAndTypeResult =
+    api.pokemon.getPokemonsByNamesAndType.useQuery(
+      {
+        nameList: pokemonNames,
+        type: pokemonType,
+      },
+      { enabled: !!(pokemonNames.length && pokemonType.length) },
+    );
 
-  //TODO: conditinally use routes to fetch data
+  const pokemonsByNameResult = api.pokemon.getPokemonsByName.useQuery(
+    { nameList: pokemonNames },
+    { enabled: !!(pokemonNames.length && !pokemonType.length) },
+  );
+
+  const pokemonsByTypeResult = api.pokemon.getPokemonsByType.useQuery(
+    { type: pokemonType },
+    { enabled: !!(!pokemonNames.length && pokemonType.length) },
+  );
+
+  const latestPokemonsResult = api.pokemon.getLatestPokemons.useQuery(
+    undefined,
+    {
+      enabled: !pokemonNames.length && !pokemonType.length,
+    },
+  );
+
+  const pokemonsList =
+    pokemonsByNameAndTypeResult.data ||
+    pokemonsByNameResult.data ||
+    pokemonsByTypeResult.data ||
+    latestPokemonsResult.data ||
+    [];
 
   return (
-    <div className="flex h-full w-full flex-col items-center p-4">
-      <PokemonNamesInput onChange={setPokemonNames} />
-      <PokemonTypeSelection
-        selectedType={pokemonType}
-        selectType={(newType: string | undefined) =>
-          setPokemonType(newType ?? "")
-        }
-      />
-      <PokemonTable pokemonsList={filteredPokemons?.data || []} />
-    </div>
+    <Paper
+      sx={{
+        display: "flex",
+        height: "100%",
+        flexDirection: "column",
+        alignItems: "center",
+        p: 4,
+        width: "100%",
+        border: "4px solid black",
+      }}
+      elevation={3}
+    >
+      <Typography
+        variant="h5"
+        sx={{ alignSelf: "flex-start", marginBottom: 2 }}
+      >
+        PokeDex Table
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+        }}
+      >
+        <PokemonNamesInput
+          onChange={setPokemonNames}
+          containerSx={{ width: "75%", marginRight: 2 }}
+        />
+        <PokemonTypeSelection
+          selectedType={pokemonType}
+          selectType={(newType: string | undefined) =>
+            setPokemonType(newType ?? "")
+          }
+          constainerSx={{ width: "25%" }}
+          showLabel={true}
+        />
+      </Box>
+      <PokemonTable pokemonsList={pokemonsList} />
+    </Paper>
   );
 }
