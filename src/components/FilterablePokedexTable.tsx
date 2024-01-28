@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from "react";
+import { useState } from "react";
 
 import Paper from "@mui/material/Paper";
 import { Box, Typography } from "@mui/material";
@@ -42,10 +42,10 @@ export default function PokemonSeachTable() {
   );
 
   const pokemonsList =
-    pokemonsByNameAndTypeResult.data ||
-    pokemonsByNameResult.data ||
-    pokemonsByTypeResult.data ||
-    latestPokemonsResult.data ||
+    pokemonsByNameAndTypeResult.data ??
+    pokemonsByNameResult.data ??
+    pokemonsByTypeResult.data ??
+    latestPokemonsResult.data ??
     [];
 
   return (
@@ -79,8 +79,9 @@ export default function PokemonSeachTable() {
         />
         <PokemonTypeSelection
           selectedType={pokemonType}
-          selectType={(newType: string | undefined) =>
-            setPokemonType(newType ?? "")
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          selectType={(newType: any) =>
+            setPokemonType((newType ?? "") as string)
           }
           constainerSx={{ width: "25%" }}
           showLabel={true}

@@ -28,7 +28,8 @@ const POKEMON_TYPES = [
 ] as const;
 
 type PokemonTypeSelectionProps = {
-  selectedType: string | Array<string> | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  selectedType: any;
   selectType: (type: string | Array<string> | undefined) => void;
   constainerSx?: React.CSSProperties;
   multiple?: boolean;
@@ -38,6 +39,7 @@ type PokemonTypeSelectionProps = {
 
 export default function PokemonTypeSelection(props: PokemonTypeSelectionProps) {
   const {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     selectedType,
     selectType,
     constainerSx,
@@ -65,13 +67,13 @@ export default function PokemonTypeSelection(props: PokemonTypeSelectionProps) {
         multiple={multiple}
         labelId={showLabel ? "pokemon-type-select-label" : undefined}
         id="pokemon-type-select"
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         value={selectedType}
         placeholder="Type"
         label="Type"
         onChange={onChange}
         fullWidth
         defaultValue="type"
-        cl
         sx={showLabel ? selectSx : { ...selectSx, height: "100%" }}
       >
         {POKEMON_TYPES.map((type) => (

@@ -5,6 +5,8 @@ import { useTheme } from "@mui/material/styles";
 import { Input, Button, Card, FormControl, Typography } from "@mui/material";
 import PokemonTypeSelection from "./PokemonTypeSelection";
 
+type MultipleValues = Array<string>;
+
 export default function CreatePokemonForm() {
   const pokemon = api.pokemon.createPokemon.useMutation({
     onSuccess: () => {
@@ -12,7 +14,7 @@ export default function CreatePokemonForm() {
     },
   });
   const [name, setName] = useState("");
-  const [types, setTypes] = useState([]);
+  const [types, setTypes] = useState<MultipleValues>([]);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -69,7 +71,8 @@ export default function CreatePokemonForm() {
         />
         <PokemonTypeSelection
           multiple={true}
-          selectType={(newValue: Array<string>) => setTypes(newValue || [])}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          selectType={(newValue: any) => setTypes(newValue as MultipleValues)}
           selectedType={types}
           showLabel={false}
           constainerSx={{
