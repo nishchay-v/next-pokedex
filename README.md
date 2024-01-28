@@ -1,28 +1,77 @@
-# Create T3 App
+# Solution for the Pokedex Problem
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+## Live Deployment: [Vercel](https://next-pokedex-blue.vercel.app/)
 
-## What's next? How do I make an app with this?
+# Pokedex Problem
+> Taken from [Theo](https://t3-tools.notion.site/Pokedex-Problem-90f9dcfff10d4418a6fad44581b1ecff) and modified a bit
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Tech Stack
+Make sure you're using:
+- Typescript
+- Next.js 
+- Prisma
+- tRPC (React Query)
+- Material UI
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+The problem is divided into three parts, you're supposed to complete all three as three different routes.
+## Part 1
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+1. Create a SQL DB with Prisma ORM that stores pokemon (you can fill this with mock data)
+2. Create a tRPC router to access Pokemon from the DB and return in this format:
 
-## Learn More
+```jsx
+const pokemon = getPokemon("Bulbasaur");
+...
+pokemon = {
+  id: 1,
+  name: "Bulbasaur",
+  types: ["grass"],
+  sprite: "https://pokemon.com/pictures/bulbasaur.png"
+}
+```
+3. Create a form to take this input and create a reusable `<PokemonRow />` component that takes in `bulbasaur` as a property and renders a row with the name, id, type and sprite image
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## Part 2
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+Create a second tRPC route to return data as the following when given an input of array:
+```jsx
+const pokemonArray = getPokemon(["Bulbasaur", "Charmander", ...]);
+...
+pokemonArray = [
+{
+  id: 1,
+  name: "Bulbasaur",
+  types: ["grass"],
+  sprite: "https://pokemon.com/pictures/bulbasaur.png"
+}, {
+  id: 2,
+  ...
+}, ...]
+```
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+Create a form to take this input and create a `<PokedexTable />` component that takes in the array and renders all the pokemon in that array.
 
-## How do I deploy this?
+## Part 3
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+Create a form to take this input in `<PokemonTypeSelection />` component with the following props
+
+```tsx
+type PokemonTypeSelectionProps = {
+  selectedType: string | undefined;
+  selectType: (type: string | undefined) => void;
+}
+```
+
+...create a `<FilterablePokedexTable />` component that renders both the `<PokemonTypeSelection />` component and `<PokedexTable />` component. Make sure you only display Pokemon with the selected type!
+Make sure you create the necessary tRPC routes to get this data.
+
+## Bonus
+- Code Quality
+- DB Schema
+- Pagination
+- Caching
+- Responsive UI
+
+## Submission
+- Deployed link to the project, you can use free hosts like Vercel & Planetscale
+- GitHub repo with source code, please make it public
